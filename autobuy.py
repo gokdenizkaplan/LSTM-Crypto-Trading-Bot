@@ -10,25 +10,25 @@ import joblib
 from tensorflow.keras.models import load_model
 from datetime import datetime
 
-# --- 🔐 OKX VE STRATEJİ AYARLARI ---
+#  OKX VE STRATEJİ AYARLARI
 API_KEY = ""
 API_SECRET = ""
 API_PASSWORD = ""
 
-SEMBOL = "BTC/USDT"  # OKX sembol formatı
-YF_SEMBOL = "BTC-USD"  # Yahoo Finance formatı (Veri çekmek için)
+SEMBOL = "BTC/USDT" 
+YF_SEMBOL = "BTC-USD"  
 
-# Strateji (Değiştirme, modelinle aynı kalsın)
+# Strateji 
 ALIM_ESIGI = 0.45
 ENTRY_MA_LEN = 20
 EXIT_MA_LEN = 100
 FEATURE_LIST = ['Log_Ret', 'MFI_14', 'NATR_14', 'RSI_14', 'Dist_EMA', 'ROC_10']
 LOOK_BACK_DAYS = 30
 
-# Durum Dosyası (Botun hafızası)
+# Durum Dosyası 
 DURUM_DOSYASI = "bot_durumu.json"
 
-print("--- 🤖 OTOMATİK OKX BOTU BAŞLATILIYOR ---")
+print(" OKX BOTU BAŞLATILIYOR ")
 
 # 1. OKX BAĞLANTISI
 try:
@@ -40,18 +40,18 @@ try:
     })
     # Bağlantı testi
     bakiye = exchange.fetch_balance()
-    print(f"✅ OKX Bağlantısı Başarılı! USDT Bakiyesi: {bakiye['USDT']['free']:.2f}$")
+    print(f"OKX Bağlantısı Başarılı! USDT Bakiyesi: {bakiye['USDT']['free']:.2f}$")
 except Exception as e:
-    print(f"❌ OKX Bağlantı Hatası: {e}")
+    print(f"OKX Bağlantı Hatası: {e}")
     exit()
 
 # 2. MODEL YÜKLEME
 try:
     model = load_model("sampiyon_model.h5")
     scaler = joblib.load("sampiyon_scaler.gz")
-    print("✅ Yapay Zeka Yüklendi.")
+    print(" Yapay Zeka Yüklendi.")
 except:
-    print("❌ Model dosyaları eksik! (sampiyon_model.h5 ve scaler)")
+    print(" Model dosyaları eksik! (sampiyon_model.h5 ve scaler)")
     exit()
 
 
@@ -87,7 +87,7 @@ def emir_ver(islem_tipi, miktar=None):
 
             # OKX Market Emri
             order = exchange.create_market_buy_order(SEMBOL, alinacak_miktar)
-            print(f"🟢 ALIM EMRİ GİRİLDİ: {alinacak_miktar:.6f} BTC @ {fiyat}")
+            print(f" ALIM EMRİ GİRİLDİ: {alinacak_miktar:.6f} BTC @ {fiyat}")
             return True
 
         elif islem_tipi == 'sell':
@@ -96,7 +96,7 @@ def emir_ver(islem_tipi, miktar=None):
 
             # OKX Market Emri
             order = exchange.create_market_sell_order(SEMBOL, btc_bakiye)
-            print(f"🔴 SATIM EMRİ GİRİLDİ: {btc_bakiye:.6f} BTC @ {fiyat}")
+            print(f" SATIM EMRİ GİRİLDİ: {btc_bakiye:.6f} BTC @ {fiyat}")
             return True
 
     except Exception as e:
@@ -140,7 +140,7 @@ def analizi_calistir():
     X_pred = input_scaled.reshape(1, LOOK_BACK_DAYS, len(FEATURE_LIST))
     prob = model.predict(X_pred, verbose=0)[0][0]
 
-    # --- KARAR MEKANİZMASI ---
+    # KARAR MEKANİZMASI 
     sinyal = "BEKLE"
     trend_giris = guncel_fiyat > last_row['MA_ENTRY']
     trend_cikis = guncel_fiyat < last_row['MA_EXIT']
@@ -184,9 +184,9 @@ while True:
 
     time.sleep(3)  # 1 Saat bekle
 
-    # --- İŞLEM ANALİZİ RAPORU ---
+    # İŞLEM ANALİZİ RAPORU
     print("\n" + "=" * 40)
-    print("📊 DETAYLI İŞLEM RAPORU")
+    print(" DETAYLI İŞLEM RAPORU")
     print("-" * 40)
 
     toplam_islem = len(trade_log) // 2  # Al ve Sat 1 işlem sayılır
@@ -197,12 +197,12 @@ while True:
 
     print("İŞLEM GEÇMİŞİ:")
     for log in trade_log:
-        print(log)  # Her bir işlemi ekrana yazdıralım
+        print(log)  
 
         if "SAT" in log:
-            # PNL değerini metinden ayıklama (Örn: PNL: %12.50)
+            
             parca = log.split("PNL: %")[1]
-            yuzde = float(parca.split(" ")[0])  # Sadece sayıyı al
+            yuzde = float(parca.split(" ")[0])  
 
             if yuzde > 0:
                 kazancli_islem += 1
@@ -213,8 +213,8 @@ while True:
 
     print("-" * 40)
     print(f"TOPLAM İŞLEM SAYISI : {toplam_islem}")
-    print(f"✅ KAZANÇLI İŞLEMLER : {kazancli_islem}")
-    print(f"❌ ZARARLI İŞLEMLER  : {zararli_islem}")
+    print(f" KAZANÇLI İŞLEMLER : {kazancli_islem}")
+    print(f" ZARARLI İŞLEMLER  : {zararli_islem}")
 
     if toplam_islem > 0:
         basari_orani = (kazancli_islem / toplam_islem) * 100
