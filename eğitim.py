@@ -75,8 +75,7 @@ class_weights_dict = dict(enumerate(class_weights))
 
 print(f"Hesaplanan İdeal Ağırlıklar: {class_weights_dict}")
 
-# --- 5. MODEL MİMARİSİ (SADELEŞTİRİLMİŞ) ---
-# Daha az nöron = Daha az kafa karışıklığı = Daha net kararlar
+
 model = Sequential([
     LSTM(units=64, return_sequences=True, input_shape=(X_train.shape[1], X_train.shape[2])),
     BatchNormalization(),
@@ -93,7 +92,7 @@ model = Sequential([
 optimizer = Adam(learning_rate=0.001)  # Standart hız
 model.compile(optimizer=optimizer, loss='binary_crossentropy', metrics=['accuracy'])
 
-# --- 6. EĞİTİM ---
+# --- 5. EĞİTİM ---
 checkpoint = ModelCheckpoint("sampiyon_model.h5", monitor='val_loss', save_best_only=True, mode='min', verbose=1)
 early_stop = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
 reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=5, min_lr=0.00001)
@@ -104,7 +103,7 @@ history = model.fit(
     epochs=100,
     batch_size=32,
     validation_data=(X_test, y_test),
-    class_weight=class_weights_dict,  # Otomatik ağırlıklar
+    class_weight=class_weights_dict,  
     callbacks=[checkpoint, early_stop, reduce_lr],
     verbose=1
 )
