@@ -8,12 +8,12 @@ from tensorflow.keras.models import load_model
 from sklearn.preprocessing import MinMaxScaler
 from datetime import datetime
 
-# --- 🎯 NİHAİ STRATEJİ & MODEL AYARLARI ---
+
 SEMBOL = "BTC-USD"
 MODEL_DOSYASI = "sampiyon_model.h5"
 SCALER_DOSYASI = "sampiyon_scaler.gz"
 
-# KİLİT NOKTA: 0.45 EŞİK (Modelin maksimum sinyalini yakalamak için)
+
 ALIM_ESIGI = 0.45
 
 # STRATEJİ EMA'LARI
@@ -23,7 +23,7 @@ EXIT_MA_LEN = 100  # EMA 100 (Güvenli Çıkış)
 KOMISYON = 0.001
 BASLANGIC_BAKIYE = 1000
 
-# V4 Modelin Beklediği ÖZELLİKLER (6 Adet)
+
 FEATURE_LIST = ['Log_Ret', 'MFI_14', 'NATR_14', 'RSI_14', 'Dist_EMA', 'ROC_10']
 LOOK_BACK_DAYS = 30
 BUGUN = datetime.now().strftime('%Y-%m-%d')
