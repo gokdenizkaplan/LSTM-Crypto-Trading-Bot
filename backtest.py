@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from tensorflow.keras.models import load_model
 from datetime import datetime
 
-# --- 🚀 HODL+ (YAPIŞKAN HİBRİT) STRATEJİSİ ---
+
 SEMBOL = "BTC-USD"
 MODEL_DOSYASI = "sampiyon_model.h5"
 SCALER_DOSYASI = "sampiyon_scaler.gz"
@@ -19,9 +19,9 @@ FEATURE_LIST = ['Log_Ret', 'MFI_14', 'NATR_14', 'RSI_14', 'Dist_EMA', 'ROC_10']
 LOOK_BACK_DAYS = 30
 BUGUN = datetime.now().strftime('%Y-%m-%d')
 
-print(f"--- FİNAL STRATEJİ: HODL+ (Boğada Yapış, Ayıda Kaç) ---")
 
-# 1. Yükleme
+
+
 try:
     model = load_model(MODEL_DOSYASI)
     scaler = joblib.load(SCALER_DOSYASI)
@@ -77,7 +77,7 @@ for i in range(LOOK_BACK_DAYS, len(df) - 1):
     X_window = scaled_data[i - LOOK_BACK_DAYS:i].reshape(1, LOOK_BACK_DAYS, len(FEATURE_LIST))
     prob = model.predict(X_window, verbose=0)[0][0]
 
-    # --- 🧠 REJİM KARARI ---
+   
     is_bull = current_price > ema200
 
     if is_bull:
@@ -147,7 +147,7 @@ print("-" * 50)
 print(f"BOT GETİRİSİ : % {total_bot:.2f}")
 print(f"HODL GETİRİSİ: % {total_hodl:.2f}")
 print("-" * 50)
-print(f"DURUM: {'👑 HODL YIKILDI' if total_bot > total_hodl else '⚠️ YAKLAŞTIK AMA YETMEDİ'}")
+print(f"DURUM: {' HODL YIKILDI' if total_bot > total_hodl else ' YAKLAŞTIK AMA YETMEDİ'}")
 
 plt.figure(figsize=(12, 6))
 plt.yscale('log')
@@ -191,7 +191,7 @@ print(f"❌ ZARARLI İŞLEMLER  : {zararli_islem}")
 
 if toplam_islem > 0:
     basari_orani = (kazancli_islem / toplam_islem) * 100
-    print(f"🎯 BAŞARI ORANI      : %{basari_orani:.2f}")
+    print(f" BAŞARI ORANI      : %{basari_orani:.2f}")
 else:
     print("Hiç işlem yapılmamış.")
 
