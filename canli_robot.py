@@ -12,8 +12,8 @@ from datetime import datetime
 
 # --- ⚙️ AYARLAR ---
 SEMBOL = "BTC-USD"
-TELEGRAM_TOKEN = "8586050848:AAGv4feVHuHziD1AkgwL4ELYAUCk2F1UImc"  # BotFather'dan aldığın Token
-TELEGRAM_CHAT_ID = "6401973362"  # UserInfoBot'tan aldığın ID
+TELEGRAM_TOKEN = ""  # BotFather'dan aldığın Token
+TELEGRAM_CHAT_ID = ""  # UserInfoBot'tan aldığın ID
 DURUM_DOSYASI = "bot_durumu.json"
 
 # Strateji Ayarları (Final Kararlarımız)
